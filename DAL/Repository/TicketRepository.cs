@@ -24,15 +24,16 @@ namespace DAL.Repository
             return _ticketSet.Find(id);
         }
 
-        public void Create(DBTicket book)
+        public void Create(DBTicket ticket)
         {
-            _ticketSet.Add(book);
+            _ticketSet.Add(ticket);
         }
 
-        public void Update(DBTicket item)
+        public void Update(string name1, string name2, DBTicket entity)
         {
-            _ticketSet.Attach(item);
-            _unitOfWork.Context.Entry(item).State = EntityState.Modified;
+            var existingEntity = _ticketSet.Find(name1, name2);
+            if (existingEntity != null)
+                _unitOfWork.Context.Entry(existingEntity).CurrentValues.SetValues(entity);
         }
 
         public void Delete(int id)

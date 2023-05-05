@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Runtime.Remoting.Contexts;
+using System.Windows.Forms;
 using DAL.Configurations;
 using DAL.DBEntities;
 
@@ -8,7 +9,7 @@ namespace DAL
 {
     public class ShowContext : DbContext
     {
-        public ShowContext() : base("name=ShowContext")
+        public ShowContext(DbContextOptions<ShowContext> options) : base("name=ShowContext")
         {
         }
         public DbSet<DBShow> Shows { get; set; }

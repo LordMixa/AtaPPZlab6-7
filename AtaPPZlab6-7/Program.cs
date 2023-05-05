@@ -1,37 +1,35 @@
+using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
 using BLL;
 using DAL;
+using Microsoft.AspNetCore.Hosting;
+
 namespace AtaPPZlab6_7
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            ShowService showService;
+            var config = new MapperConfiguration(cfg =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                cfg.AddProfile(new UserMappingProfile());
+            });
+            var mapper = config.CreateMapper();
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton(mapper)
+                .BuildServiceProvider();
+            showService = new ShowService(serviceProvider.GetService<IMapper>());
+            showService.GetShows();
+            //CreateHostBuilder(args).Build().Run();
         }
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+           Host.CreateDefaultBuilder(args)
+               .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+               .ConfigureWebHostDefaults(webBuilder =>
+               {
+                   webBuilder.UseStartup<Startup>();
+               });
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using DAL.DBEntities;
 
 namespace DAL.Repository
@@ -41,11 +42,11 @@ namespace DAL.Repository
         {
             return _showSet;
         }
-
-        public void Update(DBShow item)
+        public void Update(string name1, string name2,DBShow entity)
         {
-            _showSet.Attach(item);
-            _unitOfWork.Context.Entry(item).State = EntityState.Modified;
+            var existingEntity = _showSet.Find(name1,name2);
+            if (existingEntity != null)
+                _unitOfWork.Context.Entry(existingEntity).CurrentValues.SetValues(entity);
         }
     }
 }

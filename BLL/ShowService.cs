@@ -70,6 +70,26 @@ namespace BLL
                 unitOfWork.Save();
             }
         }
+        public void UpdateShow(string name1, string name2, Show show)
+        {
+            using (var unitOfWork = new UnitOfWork())
+            {
+                var showRepository = new ShowRepository(unitOfWork);
+                var dbshow = _mapper.Map<DBShow>(show);
+                showRepository.Update(name1, name2,dbshow);
+                unitOfWork.Save();
+            }
+        }
+        public void UpdateTicket(string name1, string name2, Ticket ticket)
+        {
+            using (var unitOfWork = new UnitOfWork())
+            {
+                var ticketRepository = new TicketRepository(unitOfWork);
+                var dbticket = _mapper.Map<DBTicket>(ticket);
+                ticketRepository.Update(name1, name2, dbticket);
+                unitOfWork.Save();
+            }
+        }
         public IEnumerable<Show> GetShows()
         {
             using (var unitOfWork = new UnitOfWork())
