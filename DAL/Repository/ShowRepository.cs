@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
+//using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using DAL.DBEntities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository
 {
@@ -42,11 +43,15 @@ namespace DAL.Repository
         {
             return _showSet;
         }
-        public void Update(string name1, string name2,DBShow entity)
+        public void Update(string name1,DBShow entity)
         {
-            var existingEntity = _showSet.Find(name1,name2);
+            var existingEntity = _showSet.FirstOrDefault(s => s.Name == name1);
             if (existingEntity != null)
-                _unitOfWork.Context.Entry(existingEntity).CurrentValues.SetValues(entity);
+            {
+                _showSet.Remove(existingEntity);
+                _unitOfWork.Save();
+                _showSet.Add(entity);
+            }
         }
     }
 }

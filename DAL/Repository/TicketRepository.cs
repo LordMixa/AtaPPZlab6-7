@@ -1,6 +1,6 @@
 ﻿using DAL.DBEntities;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 
 namespace DAL.Repository
@@ -29,11 +29,15 @@ namespace DAL.Repository
             _ticketSet.Add(ticket);
         }
 
-        public void Update(string name1, string name2, DBTicket entity)
+        public void Update(string name1,  DBTicket entity)
         {
-            var existingEntity = _ticketSet.Find(name1, name2);
+            var existingEntity = _ticketSet.FirstOrDefault(s => s.NameOfOwner == name1);
             if (existingEntity != null)
-                _unitOfWork.Context.Entry(existingEntity).CurrentValues.SetValues(entity);
+            {
+                _ticketSet.Remove(existingEntity);
+                _unitOfWork.Save();
+                _ticketSet.Add(entity);
+            }
         }
 
         public void Delete(int id)

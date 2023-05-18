@@ -1,7 +1,8 @@
-﻿using Autofac.Core;
-using Autofac;
+﻿using Autofac;
 using AutoMapper;
 using BLL;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Infrastructure;
 
 namespace AtaPPZlab6_7
 {
@@ -16,6 +17,7 @@ namespace AtaPPZlab6_7
 
             builder.Register(ctx => ctx.Resolve<MapperConfiguration>().CreateMapper()).As<IMapper>().InstancePerLifetimeScope();
 
+            builder.RegisterType<ShowService>().InstancePerLifetimeScope();
         }
     }
 }

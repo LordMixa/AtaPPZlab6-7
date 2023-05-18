@@ -1,5 +1,6 @@
-﻿using System;
-using System.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Configuration;
 using System.Runtime.Remoting.Contexts;
 
 namespace DAL.Repository
@@ -10,7 +11,10 @@ namespace DAL.Repository
         private bool disposed = false;
         public UnitOfWork()
         {
-            db = new ShowContext();
+            var optionsBuilder = new DbContextOptionsBuilder<ShowContext>();
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=ShowContext;Trusted_Connection=True;");
+            var dbContextOptions = optionsBuilder.Options;
+            db = new ShowContext(dbContextOptions);
         }
 
         public void Save()

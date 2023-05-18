@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtaPPZlab6-7", "AtaPPZlab6-7\AtaPPZlab6-7.csproj", "{4EB58B93-711B-4241-8360-9ACC62B94F1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtaPPZlab6-7", "AtaPPZlab6-7\AtaPPZlab6-7.csproj", "{4EB58B93-711B-4241-8360-9ACC62B94F1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{2B17692C-E334-4D85-9A5A-CE53434A52F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{9F417D94-F39F-4C14-B9EC-F521ADE6E1F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{45FDFFAB-FF8F-4916-9201-EAC034904572}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{9F417D94-F39F-4C14-B9EC-F521ADE6E1F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F417D94-F39F-4C14-B9EC-F521ADE6E1F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F417D94-F39F-4C14-B9EC-F521ADE6E1F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45FDFFAB-FF8F-4916-9201-EAC034904572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45FDFFAB-FF8F-4916-9201-EAC034904572}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45FDFFAB-FF8F-4916-9201-EAC034904572}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45FDFFAB-FF8F-4916-9201-EAC034904572}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

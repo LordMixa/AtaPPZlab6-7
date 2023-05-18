@@ -1,0 +1,23 @@
+﻿@model IEnumerable<AtaPPZlab6_7.Models.TicketViewModel>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name of show</th>
+            <th>Name of owner</th>
+            <th>Date</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.NameShow</td>
+                <td>@item.NameOfOwner</td>
+                <td>@item.Date</td>
+                <td>@item.Price</td>
+            </tr>
+        }
+    </tbody>
+</table>

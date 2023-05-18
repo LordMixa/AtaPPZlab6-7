@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
+﻿using Autofac;
 using BLL;
 using Microsoft.OpenApi.Models;
+using DAL;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
 
 namespace AtaPPZlab6_7
 {
@@ -23,15 +19,23 @@ namespace AtaPPZlab6_7
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<ShowService>();
+            services.AddRazorPages();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                c.UseAllOfForInheritance();
+                c.CustomSchemaIds(type => type.FullName);
+                c.SelectSubTypesUsing(baseType => baseType.Assembly.GetTypes().Where(type => type.IsSubclassOf(baseType)));
             });
+            services.AddDbContext<ShowContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("MyDatabase")));
         }
+
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule(new AutofacModule());
+            builder.RegisterType<ShowService>().AsSelf().InstancePerLifetimeScope();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,6 +46,9 @@ namespace AtaPPZlab6_7
             }
 
             app.UseRouting();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

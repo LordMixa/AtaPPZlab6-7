@@ -1,0 +1,11 @@
+﻿@model IEnumerable<AtaPPZlab6_7.Models.ShowViewModel>
+
+@foreach (var item in Model)
+{
+	<h1>@item.Name</h1>
+	<p><strong>Author:</strong> @item.Author</p>
+	<p><strong>Genre:</strong> @item.Genre</p>
+	<p><strong>Count Seats:</strong> @item.CountSeats</p>
+	<p><strong>Date:</strong> @item.Date</p>
+	<p><strong>Price:</strong> @item.Price</p>
+}
