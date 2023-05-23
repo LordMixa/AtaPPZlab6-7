@@ -11,15 +11,15 @@ namespace AtaPPZlab6_7.Controllers
     [ApiController]
     public class ShowController:Controller
     {
-        private readonly ShowService _showservice;
-        public ShowController(ShowService showService) 
+        private readonly IService _showservice;
+         public ShowController(IService showService) 
         { 
            _showservice= showService;
         }
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            List<Show> shows = (List<Show>)_showservice.GetShows();
+            List<Show> shows = (List<Show>)_showservice.GetEntity();
             if (id > shows.Count)
                 return NotFound();
             else
@@ -40,43 +40,52 @@ namespace AtaPPZlab6_7.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Show value)
         {
-            _showservice.AddShow(value);
+            _showservice.AddEntity(value);
             return Ok();
         }
 
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Show value)
         {
-            List<Show> shows = (List<Show>)_showservice.GetShows();
+            List<Show> shows = (List<Show>)_showservice.GetEntity();
             if (id > shows.Count)
                 return NotFound();
-            _showservice.UpdateShow(shows[--id].Name, value);
+            _showservice.UpdateEntity(shows[--id].Name, value);
             return Ok();
         }
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            List<Show> shows = (List<Show>)_showservice.GetShows();
+            List<Show> shows = (List<Show>)_showservice.GetEntity();
             if (id > shows.Count)
                 return NotFound();
             Show show = shows[--id];
-            _showservice.DeleteShow(show.Name, show.Author);
+            _showservice.DeleteEntity(show.Name, show.Author);
             return View();
         }
         [HttpGet]
         public IActionResult Index()
         {
-            var shows = _showservice.GetShows();
-            var showmodel = shows.Select(p => new ShowViewModel
+            var shows = _showservice.GetEntity();
+            var showModels = new List<ShowViewModel>();
+            foreach (var show in shows)
             {
-                Name = p.Name,
-                Author= p.Author,
-                Genre= p.Genre,
-                CountSeats= p.CountSeats,
-                Date= p.Date,
-                Price= p.Price
-            });
-            return View(showmodel);
+                if (show is Show concreteTicket)
+                {
+                    var showModel = new ShowViewModel
+                    {
+                        Name = concreteTicket.Name,
+                        Author = concreteTicket.Author,
+                        Genre = concreteTicket.Genre,
+                        CountSeats = concreteTicket.CountSeats,
+                        Date = concreteTicket.Date,
+                        Price = concreteTicket.Price
+                    };
+
+                    showModels.Add(showModel);
+                }
+            }
+            return View(showModels);
         }
     }
 }

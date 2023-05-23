@@ -19,10 +19,11 @@ namespace BLL
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
 
             CreateMap<Ticket, DBTicket>()
-           .ForMember(dest => dest.DBTicketId, opt => opt.Ignore());
+                .ForMember(dest => dest.DBTicketId, opt => opt.Ignore())
+                .ForMember(dest => dest.NameShow, opt => opt.MapFrom(src => src.Name)); ;
 
             CreateMap<DBTicket, Ticket>()
-                .ForMember(dest => dest.NameShow, opt => opt.MapFrom(src => src.NameShow))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.NameShow))
                 .ForMember(dest => dest.NameOfOwner, opt => opt.MapFrom(src => src.NameOfOwner))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));

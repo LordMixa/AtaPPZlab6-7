@@ -15,6 +15,14 @@ namespace BLL
             tickets = ltickets;
             nowdatetime = DateTime.Now;
         }
+        public void AddShow(IEntity entity)
+        {
+            shows.Add((Show)entity);
+        }
+        public void AddTicket(IEntity entity)
+        {
+            tickets.Add((Ticket)entity);
+        }
         public void AddShow(string name, string author, string genre, int countseats, DateTime dateTime, double price)
         {
             shows.Add(new Show(name, author, genre, countseats, dateTime, price));

@@ -16,7 +16,7 @@ namespace DAL.Repository
             var dbContextOptions = optionsBuilder.Options;
             db = new ShowContext(dbContextOptions);
         }
-
+      
         public void Save()
         {
             db.SaveChanges();

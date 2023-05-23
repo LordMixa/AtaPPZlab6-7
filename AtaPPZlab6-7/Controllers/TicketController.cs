@@ -10,58 +10,78 @@ namespace AtaPPZlab6_7.Controllers
     [ApiController]
     public class TicketController : Controller
     {
-        private readonly ShowService _ticketservice;
-        public TicketController(ShowService showService)
+        private readonly IService _ticketservice;
+        public TicketController(IService showService)
         {
             _ticketservice = showService;
         }
         [HttpGet("{id}")]
-        public ActionResult<Ticket> Get(int id)
+        public IActionResult Get(int id)
         {
-            List<Ticket> tickets = (List<Ticket>)_ticketservice.GetTickets();
+            List<Ticket> tickets = (List<Ticket>)_ticketservice.GetEntity();
             if (id > tickets.Count)
                 return NotFound();
             else
-                return tickets[--id];
+            {
+                Ticket ticket = tickets[--id];
+                var ticketModel = new TicketViewModel
+                {
+                    Name = ticket.Name,
+                    NameOfOwner = ticket.NameOfOwner,
+                    Date = ticket.Date,
+                    Price = ticket.Price
+                };
+                return View(ticketModel);
+            }
         }
         [HttpPost]
         public ActionResult Post([FromBody] Ticket value)
         {
-            _ticketservice.AddTicket(value);
+            _ticketservice.AddEntity(value);
             return Ok();
         }
 
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Ticket value)
         {
-            List<Ticket> tickets = (List<Ticket>)_ticketservice.GetShows();
+            List<Ticket> tickets = (List<Ticket>)_ticketservice.GetEntity();
             if (id > tickets.Count)
                 return NotFound();
-            _ticketservice.UpdateTicket(tickets[--id].NameOfOwner, value);
+            _ticketservice.UpdateEntity(tickets[--id].NameOfOwner, value);
             return Ok();
         }
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            List<Ticket> tickets = (List<Ticket>)_ticketservice.GetTickets();
+            List<Ticket> tickets = (List<Ticket>)_ticketservice.GetEntity();
             if (id > tickets.Count)
                 return NotFound();
             Ticket ticket = tickets[--id];
-            _ticketservice.DeleteTicket(ticket.NameShow, ticket.NameOfOwner);
+            _ticketservice.DeleteEntity(ticket.Name, ticket.NameOfOwner);
             return Ok();
         }
         [HttpGet]
         public IActionResult Index()
         {
-            var tickets = _ticketservice.GetTickets();
-            var ticketmodel = tickets.Select(p => new TicketViewModel
+            var tickets = _ticketservice.GetEntity();
+            var ticketModels = new List<TicketViewModel>();
+
+            foreach (var ticket in tickets)
             {
-                NameShow = p.NameShow,
-                NameOfOwner = p.NameOfOwner,
-                Date = p.Date,
-                Price = p.Price
-            });
-            return View(ticketmodel);
+                if (ticket is Ticket concreteTicket)
+                {
+                    var ticketModel = new TicketViewModel
+                    {
+                        Name = concreteTicket.Name,
+                        NameOfOwner = concreteTicket.NameOfOwner,
+                        Date = concreteTicket.Date,
+                        Price = concreteTicket.Price
+                    };
+
+                    ticketModels.Add(ticketModel);
+                }
+            }
+            return View(ticketModels);
         }
     }
 }

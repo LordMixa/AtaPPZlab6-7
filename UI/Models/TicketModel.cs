@@ -1,9 +1,9 @@
-﻿namespace AtaPPZlab6_7.Models
+﻿namespace UI.Models
 {
-    public class TicketViewModel
+    public class TicketModel
     {
         public string Name { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         public double Price { get; set; }
         public string NameOfOwner { get; set; }
     }

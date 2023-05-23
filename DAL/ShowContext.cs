@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-//using System.Data.Entity;
-using System.Runtime.Remoting.Contexts;
-using System.Windows.Forms;
-using DAL.Configurations;
-using DAL.DBEntities;
+﻿using DAL.DBEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL

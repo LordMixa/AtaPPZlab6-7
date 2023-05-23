@@ -1,8 +1,4 @@
 using Autofac.Extensions.DependencyInjection;
-using AutoMapper;
-using BLL;
-using DAL;
-using Microsoft.AspNetCore.Hosting;
 
 namespace AtaPPZlab6_7
 {

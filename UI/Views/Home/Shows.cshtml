@@ -1,5 +1,4 @@
-﻿@model AtaPPZlab6_7.Models.ShowViewModel
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>Show Functions</title>
@@ -35,8 +34,13 @@
             xhr.open("DELETE", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert("Show deleted successfully");
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        alert(response.message);
+                    } else {
+                        alert("Error: " + xhr.statusText);
+                    }
                 }
             };
             xhr.send();
@@ -50,70 +54,67 @@
 </head>
 <body>
     <h1>Update Show</h1>
-    <form action="/Show/{id}" method="put">
-    <label for="id">Show ID:</label>
-    <input type="number" id="id" name="id" required>
-    <br>
+    <form id="updateForm">
+        <label for="id">Show ID:</label>
+        <input type="number" id="Id" name="id" required>
+        <br>
 
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
-    <br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
 
-    <label for="author">Author:</label>
-    <input type="text" id="author" name="author" required>
-    <br>
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+        <br>
 
-    <label for="genre">Genre:</label>
-    <input type="text" id="genre" name="genre" required>
-    <br>
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre" name="genre" required>
+        <br>
 
-    <label for="countSeats">Count Seats:</label>
-    <input type="number" id="countSeats" name="countSeats" required>
-    <br>
+        <label for="countSeats">Count Seats:</label>
+        <input type="number" id="countSeats" name="countSeats" required>
+        <br>
 
-    <label for="date">Date:</label>
-    <input type="datetime-local" id="date" name="date" required>
-    <br>
+        <label for="date">Date:</label>
+        <input type="datetime-local" id="date" name="date" required>
+        <br>
 
-    <label for="price">Price:</label>
-    <input type="number" id="price" name="price" required>
-    <br>
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" required>
+        <br>
 
-    <button onclick="updateShow()">Update</button>
+        <button type="button" onclick="updateShow()">Update</button>
+    </form>
 
     <script>
         function updateShow() {
-            var id = document.getElementById("id").value;
-            var name = document.getElementById("name").value;
-            var author = document.getElementById("author").value;
-            var genre = document.getElementById("genre").value;
-            var countSeats = document.getElementById("countSeats").value;
-            var date = document.getElementById("date").value;
-            var price = document.getElementById("price").value;
+            var id = document.getElementById("Id").value;
+            var form = document.getElementById("updateForm");
+            var formData = new FormData(form);
 
+            var data = {};
+            formData.forEach(function (value, key) {
+                if (key !== "id") {
+                data[key] = value;
+                }
+            });
             var url = "/Show/" + id;
-            var data = {
-                Name: name,
-                Author: author,
-                Genre: genre,
-                CountSeats: countSeats,
-                Date: date,
-                Price: price
-            };
 
             var xhr = new XMLHttpRequest();
             xhr.open("PUT", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert("Show updated successfully");
-                }else
-                    alert("Error" );
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        alert("Show updated successfully");
+                    } else {
+                        alert("Error: " + xhr.statusText);
+                    }
+                }
             };
             xhr.send(JSON.stringify(data));
         }
     </script>
-    </form>
 </body>
 </html>
 <html>
@@ -139,8 +140,8 @@
         <input type="number" id="countSeats" name="countSeats" required>
         <br>
 
-        <label for="datetime">Date and Time:</label>
-        <input type="datetime-local" id="datetime" name="datetime" required>
+        <label for="date">Date and Time:</label>
+        <input type="datetime-local" id="date" name="date" required>
         <br>
 
         <label for="price">Price:</label>
@@ -149,7 +150,6 @@
 
         <button type="button" onclick="addShow()">Add</button>
     </form>
-
     <script>
         function addShow() {
             var form = document.getElementById("showForm");
@@ -157,12 +157,7 @@
 
             var data = {};
             formData.forEach(function (value, key) {
-                if (key === "datetime") {
-                    var date = new Date(value);
-                    data[key] = date.toISOString();
-                } else {
-                    data[key] = value;
-                }
+                data[key] = value;
             });
 
             var url = "/Show";
@@ -184,4 +179,3 @@
     </script>
 </body>
 </html>
-

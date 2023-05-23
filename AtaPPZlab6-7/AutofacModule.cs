@@ -18,6 +18,7 @@ namespace AtaPPZlab6_7
             builder.Register(ctx => ctx.Resolve<MapperConfiguration>().CreateMapper()).As<IMapper>().InstancePerLifetimeScope();
 
             builder.RegisterType<ShowService>().InstancePerLifetimeScope();
+            builder.RegisterType<TicketService>().AsSelf().InstancePerLifetimeScope();
         }
     }
 }

@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket Functions</title>
+</head>
+<body>
+    <h1>Ticket Functions</h1>
+
+    <form action="/Ticket" method="get">
+        <h2>Get Ticket</h2>
+        <button type="submit">Get</button>
+    </form>
+</body>
+</html>
+<html>
+<head>
+    <title>Delete Ticket</title>
+</head>
+<body>
+    <h1>Delete Ticket</h1>
+
+    <label for="showId">Show ID:</label>
+    <input type="number" id="showId" name="showId" required>
+    <br>
+
+    <label for="nameown">Name of Owner:</label>
+    <input type="text" id="nameown" name="nameown" required>
+    <br>
+
+    <button onclick="deleteTicket()">Delete</button>
+
+    <script>
+        function deleteTicket() {
+            var showId = document.getElementById("showId").value;
+            var nameown = document.getElementById("nameown").value;
+            var url = "/Ticket/" + encodeURIComponent(showId) + "?nameown=" + encodeURIComponent(nameown);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("DELETE", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        alert(response.message);
+                    } else {
+                        alert("Error: " + xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
+<html>
+<head>
+    <title>Update Ticket</title>
+</head>
+<body>
+    <h1>Update Ticket</h1>
+    <form id="updateForm">
+        <label for="showIId">Show ID:</label>
+        <input type="number" id="showIId" name="showIId" required>
+        <br>
+
+        <label for="ticketId">Ticket ID:</label>
+        <input type="number" id="ticketId" name="ticketId" required>
+        <br>
+
+        <label for="nameowne">Name of Owner:</label>
+        <input type="text" id="nameowne" name="nameowne" required>
+        <br>
+
+        <button type="button" onclick="updateTicket()">Update</button>
+    </form>
+
+    <script>
+        function updateTicket() {
+            var showIId = document.getElementById("showIId").value;
+            var id = document.getElementById("ticketId").value;
+            var nameowne = document.getElementById("nameowne").value;
+
+            var url = "/Ticket/" + encodeURIComponent(id) + "?idshow=" + encodeURIComponent(showIId) + "&nameown=" + encodeURIComponent(nameowne);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("PUT", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        alert("Ticket updated successfully");
+                    } else {
+                        alert("Error: " + xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
+<html>
+<head>
+    <title>Add Ticket</title>
+</head>
+<body>
+    <h1>Add Ticket</h1>
+         <label for="showid">Show ID:</label>
+         <input type="number" id="showid" name="showid" required>
+         <br>
+
+        <label for="nameowner">Name of Owner:</label>
+        <input type="text" id="nameowner" name="nameowner" required>
+        <br>
+
+        <button type="button" onclick="addTicket()">Add</button>
+    <script>
+        function addTicket() {
+            var id = document.getElementById("showid").value;
+            var nameowner = document.getElementById("nameowner").value;
+            var url = "/Ticket?id=" + encodeURIComponent(id) + "&nameowner=" + encodeURIComponent(nameowner);
+
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                         var response = JSON.parse(xhr.responseText);
+                         alert(response.message);
+                    } else {
+                        alert("Error: " + xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
+

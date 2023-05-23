@@ -1,6 +1,7 @@
 ﻿using AtaPPZlab6_7;
 using AtaPPZlab6_7.Controllers;
 using Autofac;
+using Autofac.Core;
 using BLL;
 using DAL;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +19,29 @@ namespace UI
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ShowService>();
             services.AddControllersWithViews();
             services.AddControllers();
             services.AddRazorPages();
+            services.AddHttpContextAccessor();
+            services.AddScoped<ProgramLogic>();
+            services.AddTransient<IService, ShowService>();
+            services.AddTransient<IService, TicketService>();
+
+            services.AddTransient<IService>(provider =>
+            {
+                var context = provider.GetService<IHttpContextAccessor>();
+                var url = context.HttpContext.Request.Path.Value.ToLower();
+
+                if (url.Contains("/show") || url.Contains("/tickets/show"))
+                {
+                    return provider.GetService<ShowService>();
+                }
+                else if (url.Contains("/ticket") || url.Contains("/shows/ticket"))
+                {
+                    return provider.GetService<TicketService>();
+                }
+                return provider.GetService<ShowService>();
+            });
             services.AddDbContext<ShowContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MyDatabase")));
         }
@@ -30,6 +50,7 @@ namespace UI
         {
             builder.RegisterModule(new AutofacModule());
             builder.RegisterType<ShowService>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<TicketService>().AsSelf().InstancePerLifetimeScope();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
