@@ -10,15 +10,9 @@ namespace BLL
     public class ShowService:IService
     {
         private readonly IMapper _mapper;
-        private readonly IShowRepository _showRepository;
         public ShowService(IMapper mapper)
         {
             _mapper = mapper;
-        }
-        public ShowService(IMapper mapper, IShowRepository showRepository)
-        {
-            _mapper = mapper;
-            _showRepository = showRepository;
         }
         public void AddEntity(IEntity show)
         {

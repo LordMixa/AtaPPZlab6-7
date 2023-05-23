@@ -83,22 +83,26 @@ namespace BLL
         }
         public string DeleteTicket(int numshow, string nameofowner)
         {
-            --numshow;
-            for (int i = 0; i < theatreBox.tickets.Count; i++)
+            if (numshow <= theatreBox.shows.Count)
             {
-                if (theatreBox.tickets[i].Name == theatreBox.shows[numshow].Name && theatreBox.tickets[i].NameOfOwner == nameofowner)
+                --numshow;
+                for (int i = 0; i < theatreBox.tickets.Count; i++)
                 {
-                    string check = theatreBox.ReturnTicket(i);
-                    if (check == "Too late to return tickets")
-                        return check;
-                    else
+                    if (theatreBox.tickets[i].Name == theatreBox.shows[numshow].Name && theatreBox.tickets[i].NameOfOwner == nameofowner)
                     {
-                        ticketService.DeleteEntity(theatreBox.shows[numshow].Name, nameofowner);
-                        return check;
+                        string check = theatreBox.ReturnTicket(i);
+                        if (check == "Too late to return tickets")
+                            return check;
+                        else
+                        {
+                            ticketService.DeleteEntity(theatreBox.shows[numshow].Name, nameofowner);
+                            return check;
+                        }
                     }
                 }
-            }
-            return "You haven`t tickets on this show";
+                return "You haven`t tickets on this show";
+            }else
+                return "Incorrect ID";
         }
         public string CheckSoldTickets(int numshow)
         {
